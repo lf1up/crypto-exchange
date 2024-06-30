@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"boilerplate/database"
-	"boilerplate/models"
+	"crypto-exchange/database"
+	"crypto-exchange/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"

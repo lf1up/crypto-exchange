@@ -1,8 +1,8 @@
 package main
 
 import (
-	"boilerplate/database"
-	"boilerplate/handlers"
+	"crypto-exchange/database"
+	"crypto-exchange/handlers"
 
 	"flag"
 	"log"
