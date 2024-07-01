@@ -42,7 +42,8 @@ func main() {
 	v1.Post("/users", handlers.UserCreate)
 
 	// Setup static files
-	app.Static("/", "./static/public")
+	// [disabled because of no need]
+	// app.Static("/", "./static/public")
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

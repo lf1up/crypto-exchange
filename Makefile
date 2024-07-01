@@ -23,8 +23,8 @@ build: ## Generate docker image
 	docker build -f Dockerfile.db -t ${db_image_name}:$(project_name)-v1 .
 
 build-no-cache: ## Generate docker image with no cache
-	docker build -f  Dockerfile.app --no-cache -t ${image_name}:$(project_name)-v1
-	docker build -f  Dockerfile.db --no-cache -t ${db_image_name}:$(project_name)-v1
+	docker build -f Dockerfile.app --no-cache -t ${image_name}:$(project_name)-v1
+	docker build -f Dockerfile.db --no-cache -t ${db_image_name}:$(project_name)-v1
 
 up-silent: ## Run local container in background
 	make delete-container-if-exist

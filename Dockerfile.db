@@ -1,5 +1,5 @@
 # Use the official PostgreSQL image from the Docker Hub
-FROM postgres:latest as DB
+FROM postgres:latest as db 
 
 # Set environment variables for PostgreSQL
 # [TODO]: put in .env file
