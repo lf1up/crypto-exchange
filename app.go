@@ -17,6 +17,7 @@ var (
 	prod = flag.Bool("prod", false, "Enable prefork in Production")
 )
 
+// [TODO]: another Docker container is needed to be added with Postgres DB
 func main() {
 	// Parse command-line flags
 	flag.Parse()
