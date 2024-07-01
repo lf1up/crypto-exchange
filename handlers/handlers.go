@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"crypto-exchange/constants"
 	"crypto-exchange/database"
 	"crypto-exchange/models"
 
@@ -30,6 +31,24 @@ func UserCreate(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 		"user":    user,
+	})
+}
+
+func CurrencyList(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"success":    true,
+		"currencies": constants.AvailableCurrencyPairs,
+	})
+}
+
+func CurrencyDetail(c *fiber.Ctx) error {
+	pair := c.Params("pair")
+
+	return c.JSON(fiber.Map{
+		"success":      true,
+		"is_available": true,
+		"pair":         pair,
+		"rate":         0.3337,
 	})
 }
 
