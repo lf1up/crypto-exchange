@@ -60,13 +60,16 @@ make stop
 
 # Start container
 make start
+
+# Purge the database volume
+make purge-db-volume
 ```
 
 ## Production
 
 ```bash
-docker build -t gofiber .
-docker run -d -p 3000:3000 gofiber ./app -prod
+# See the script script section for build info
+make up-silent-prefork
 ```
 
 Go to http://localhost:3000
