@@ -1,6 +1,7 @@
 project_name = crypto-api
 image_name = app
 db_image_name = db
+db_volume_name = db-volume
 
 help: ## This help dialog.
 	@grep -F -h "##" $(MAKEFILE_LIST) | grep -F -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -29,7 +30,7 @@ build-no-cache: ## Generate docker image with no cache
 up-silent: ## Run local container in background
 	make delete-container-if-exist
 	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app
-	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} ${db_image_name}:$(project_name)-v1
+	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} -v $(project_name)-${db_volume_name}:/var/lib/postgresql/data ${db_image_name}:$(project_name)-v1
 
 up-silent-prefork: ## Run local container in background with prefork
 	make delete-container-if-exist
