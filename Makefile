@@ -1,5 +1,6 @@
-project_name = boilerPlate
-image_name = gofiber:latest
+project_name = crypto-api
+image_name = app
+db_image_name = db
 
 help: ## This help dialog.
 	@grep -F -h "##" $(MAKEFILE_LIST) | grep -F -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -18,28 +19,34 @@ up: ## Run the project in a local container
 	make shell
 
 build: ## Generate docker image
-	docker build -t $(image_name) .
+	docker build -f Dockerfile.app -t ${image_name}:$(project_name)-v1 .
+	docker build -f Dockerfile.db -t ${db_image_name}:$(project_name)-v1 .
 
 build-no-cache: ## Generate docker image with no cache
-	docker build --no-cache -t $(image_name) .
+	docker build -f  Dockerfile.app --no-cache -t ${image_name}:$(project_name)-v1
+	docker build -f  Dockerfile.db --no-cache -t ${db_image_name}:$(project_name)-v1
 
 up-silent: ## Run local container in background
 	make delete-container-if-exist
-	docker run -d -p 3000:3000 --name $(project_name) $(image_name) ./app
+	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app
+	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} ${db_image_name}:$(project_name)-v1
 
 up-silent-prefork: ## Run local container in background with prefork
 	make delete-container-if-exist
-	docker run -d -p 3000:3000 --name $(project_name) $(image_name) ./app -prod
+	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app -prod
+	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} ${db_image_name}:$(project_name)-v1
 
 delete-container-if-exist: ## Delete container if it exists
-	docker stop $(project_name) || true && docker rm $(project_name) || true
+	docker stop $(project_name)-${image_name} || true && docker rm $(project_name)-${image_name} || true
+	docker stop $(project_name)-${db_image_name} || true && docker rm $(project_name)-${db_image_name} || true
 
 shell: ## Run interactive shell in the container
-	docker exec -it $(project_name) /bin/sh
+	docker exec -it $(project_name)-${image_name} /bin/sh
 
 stop: ## Stop the container
-	docker stop $(project_name)
+	docker stop $(project_name)-${image_name}
+	docker stop $(project_name)-${db_image_name}
 
 start: ## Start the container
-	docker start $(project_name)
-
+	docker start $(project_name)-${image_name}
+	docker start $(project_name)-${db_image_name}
