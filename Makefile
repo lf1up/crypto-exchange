@@ -51,3 +51,8 @@ stop: ## Stop the container
 start: ## Start the container
 	docker start $(project_name)-${image_name}
 	docker start $(project_name)-${db_image_name}
+
+purge-db-volume: ## Purge the database volume
+	docker stop $(project_name)-${db_image_name}
+	docker rm $(project_name)-${db_image_name}
+	docker volume rm $(project_name)-${db_volume_name}
