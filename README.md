@@ -61,7 +61,7 @@ make purge-db-volume
 ## Production
 
 ```bash
-# See the script script section for build info
+# See the Makefile script section for build info
 make up-silent-prefork
 ```
 
