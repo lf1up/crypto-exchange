@@ -29,17 +29,27 @@ build-no-cache: ## Generate docker image with no cache
 
 up-silent: ## Run local container in background
 	make delete-container-if-exist
-	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app
 	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} -v $(project_name)-${db_volume_name}:/var/lib/postgresql/data ${db_image_name}:$(project_name)-v1
+	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app
+	make create-network
+	docker restart $(project_name)-${image_name}
 
 up-silent-prefork: ## Run local container in background with prefork
 	make delete-container-if-exist
-	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app -prod
 	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} ${db_image_name}:$(project_name)-v1
+	docker run -d -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app -prod
+	make create-network
+	docker restart $(project_name)-${image_name}
 
 delete-container-if-exist: ## Delete container if it exists
+	docker network rm $(project_name)-network || true
 	docker stop $(project_name)-${image_name} || true && docker rm $(project_name)-${image_name} || true
 	docker stop $(project_name)-${db_image_name} || true && docker rm $(project_name)-${db_image_name} || true
+
+create-network: ## Create a network
+	docker network create $(project_name)-network
+	docker network connect $(project_name)-network $(project_name)-${db_image_name}
+	docker network connect $(project_name)-network $(project_name)-${image_name}
 
 shell: ## Run interactive shell in the container
 	docker exec -it $(project_name)-${image_name} /bin/sh

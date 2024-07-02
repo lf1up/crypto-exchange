@@ -1,12 +1,5 @@
 # Crypto Exchange API Example
 
-![Release](https://img.shields.io/github/release/gofiber/boilerplate.svg)
-[![Discord](https://img.shields.io/badge/discord-join%20channel-7289DA)](https://gofiber.io/discord)
-![Test](https://github.com/gofiber/boilerplate/workflows/Test/badge.svg)
-![Security](https://github.com/gofiber/boilerplate/workflows/Security/badge.svg)
-![Linter](https://github.com/gofiber/boilerplate/workflows/Linter/badge.svg)
-
-
 ## IDE Development
 
 ### Visual Studio Code
@@ -40,25 +33,25 @@ make clean-packages
 # Generate go.mod & go.sum files
 make requirements
 
-# Generate docker image
+# Generate docker images
 make build
 
-# Generate docker image with no cache
+# Generate docker images with no cache
 make build-no-cache
 
-# Run the projec in a local container
+# Run the project and SSH into the main container
 make up
 
-# Run local container in background
+# Run local containers in background
 make up-silent
 
-# Run local container in background with prefork
+# Run local containers in background with prefork
 make up-silent-prefork
 
-# Stop container
+# Stop containers
 make stop
 
-# Start container
+# Start containers
 make start
 
 # Purge the database volume
@@ -72,4 +65,4 @@ make purge-db-volume
 make up-silent-prefork
 ```
 
-Go to http://localhost:3000
+Use API at http://localhost:3000/api/v1/

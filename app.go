@@ -38,17 +38,10 @@ func main() {
 	v1 := app.Group("/api/v1")
 
 	// Bind handlers
-
-	// Users [disabled because of no need for users in this app]
-	// v1.Get("/users", handlers.UserList)
-	// v1.Post("/users", handlers.UserCreate)
-
-	// Currencies data
 	v1.Get("/currencies", handlers.CurrencyList)
 	v1.Get("/currencies/:pair", handlers.CurrencyDetail)
 
-	// Setup static files
-	// [disabled because of no need for static frontend files in this app]
+	// Setup static files [disabled because of no need for static frontend files in this app]
 	// app.Static("/", "./static/public")
 
 	// Handle not founds
