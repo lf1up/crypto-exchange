@@ -40,7 +40,7 @@ func main() {
 	// Bind handlers
 	v1.Get("/currencies", handlers.CurrencyPairList)
 	v1.Get("/currencies/:pair", handlers.CurrencyPairDetail)
-	v1.Post("/currencies/convert", handlers.CurrencyRate)
+	v1.Post("/convert", handlers.CurrencyRate)
 
 	// Setup static files [disabled because of no need for static frontend files in this app]
 	// app.Static("/", "./static/public")
