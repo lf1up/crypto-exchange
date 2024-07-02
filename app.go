@@ -38,9 +38,9 @@ func main() {
 	v1 := app.Group("/api/v1")
 
 	// Bind handlers
-	v1.Get("/currencies", handlers.CurrencyPairList)
-	v1.Get("/currencies/:pair", handlers.CurrencyPairDetail)
-	v1.Post("/convert", handlers.CurrencyRate)
+	v1.Get("/pairs", handlers.CurrencyPairList)
+	v1.Get("/pairs/:pair", handlers.CurrencyPairDetail)
+	v1.Post("/price", handlers.CurrencyPairPrice)
 
 	// Setup static files [disabled because of no need for static frontend files in this app]
 	// app.Static("/", "./static/public")

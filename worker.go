@@ -7,3 +7,12 @@ package main
 // for pairs that are described in constants/currencies.go.
 // It is important hele to also check the last time the currency pair was requirested by the API to spawn an update process immediately then,
 // an signal might come to this worker outside.
+
+import (
+	"crypto-exchange/database"
+)
+
+func start_worker() {
+	// Connected with database
+	database.Connect()
+}

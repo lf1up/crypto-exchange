@@ -25,7 +25,7 @@ func CurrencyPairDetail(c *fiber.Ctx) error {
 	})
 }
 
-func CurrencyRate(c *fiber.Ctx) error {
+func CurrencyPairPrice(c *fiber.Ctx) error {
 	from := c.FormValue("from")
 	to := c.FormValue("to")
 	value, err := strconv.ParseFloat(c.FormValue("value"), 64)
@@ -37,12 +37,11 @@ func CurrencyRate(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
-		"success":         true,
-		"is_available":    true,
-		"from":            from,
-		"to":              to,
-		"value":           value,
-		"converted_value": value * 0.3337,
+		"success":      true,
+		"is_available": true,
+		"from":         from,
+		"to":           to,
+		"value":        value * 0.3337,
 	})
 }
 

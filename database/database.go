@@ -32,6 +32,10 @@ func Insert(currencyPair models.CurrencyPair) {
 	db.Create(&currencyPair)
 }
 
+func Update(currencyPair models.CurrencyPair) {
+	db.Save(&currencyPair)
+}
+
 func Get() []models.CurrencyPair {
 	var currencyPairs []models.CurrencyPair
 
