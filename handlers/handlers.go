@@ -2,18 +2,19 @@ package handlers
 
 import (
 	"crypto-exchange/constants"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func CurrencyList(c *fiber.Ctx) error {
+func CurrencyPairList(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success":    true,
 		"currencies": constants.AvailableCurrencyPairs,
 	})
 }
 
-func CurrencyDetail(c *fiber.Ctx) error {
+func CurrencyPairDetail(c *fiber.Ctx) error {
 	pair := c.Params("pair")
 
 	return c.JSON(fiber.Map{
@@ -21,6 +22,27 @@ func CurrencyDetail(c *fiber.Ctx) error {
 		"is_available": true,
 		"pair":         pair,
 		"rate":         0.3337,
+	})
+}
+
+func CurrencyRate(c *fiber.Ctx) error {
+	from := c.FormValue("from")
+	to := c.FormValue("to")
+	value, err := strconv.ParseFloat(c.FormValue("value"), 64)
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"success": false,
+			"error":   "Invalid value.",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"success":         true,
+		"is_available":    true,
+		"from":            from,
+		"to":              to,
+		"value":           value,
+		"converted_value": value * 0.3337,
 	})
 }
 
