@@ -10,9 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	db *gorm.DB
-)
+var DB *gorm.DB
 
 // Connect with database
 func Connect(isDev bool) {
@@ -36,23 +34,33 @@ func Connect(isDev bool) {
 	}
 
 	db.AutoMigrate(&models.CurrencyPair{})
-	db.AutoMigrate(&models.CurrencyPairMetadata{})
+	// db.AutoMigrate(&models.CurrencyPairMetadata{})
+
+	DB = db
 
 	log.Println("Connected with Database!")
 }
 
 func InsertCurrencyPair(currencyPair models.CurrencyPair) {
-	db.Create(&currencyPair)
+	if err := DB.Create(&currencyPair).Error; err != nil {
+		log.Printf("Error inserting into Database: %v", err)
+	}
 }
 
 func UpdateCurrencyPair(currencyPair models.CurrencyPair) {
-	db.Save(&currencyPair)
+	if err := DB.Save(&currencyPair).Error; err != nil {
+		log.Printf("Error updating Database record: %v", err)
+	}
 }
 
 func GetCurrencyPair(name string) models.CurrencyPair {
 	var currencyPair models.CurrencyPair
 
-	db.First(&currencyPair, "name = ?", name)
+	result := DB.First(&currencyPair, "name = ?", name)
+
+	if result.Error != nil {
+		log.Printf("No Database record found: %v", result.Error)
+	}
 
 	return currencyPair
 }
@@ -60,23 +68,27 @@ func GetCurrencyPair(name string) models.CurrencyPair {
 func GetCurrencyPairs() []models.CurrencyPair {
 	var currencyPairs []models.CurrencyPair
 
-	db.Find(&currencyPairs)
+	result := DB.Find(&currencyPairs)
+
+	if result.Error != nil {
+		log.Printf("No Database record found: %v", result.Error)
+	}
 
 	return currencyPairs
 }
 
-func InsertCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
-	db.Create(&currencyPairMetadata)
-}
+// func InsertCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
+// 	DB.Create(&currencyPairMetadata)
+// }
 
-func UpdateCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
-	db.Save(&currencyPairMetadata)
-}
+// func UpdateCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
+// 	DB.Save(&currencyPairMetadata)
+// }
 
-func GetCurrencyPairMetadata(currencyPairID int) models.CurrencyPairMetadata {
-	var currencyPairMetadata models.CurrencyPairMetadata
+// func GetCurrencyPairMetadata(currencyPairID int) models.CurrencyPairMetadata {
+// 	var currencyPairMetadata models.CurrencyPairMetadata
 
-	db.First(&currencyPairMetadata, "currency_pair_id = ?", currencyPairID)
+// 	DB.First(&currencyPairMetadata, "currency_pair_id = ?", currencyPairID)
 
-	return currencyPairMetadata
-}
+// 	return currencyPairMetadata
+// }

@@ -94,14 +94,14 @@ func FetchAPIData(pair string) APIDataResponse {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("API fetching error: %v", err)
+		log.Printf("API fetching error: %v", err)
 		return APIDataResponse{IsError: true, Rate: 0, From: from, To: to}
 	}
 	defer resp.Body.Close()
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		log.Fatalf("API response decoding error: %v", err)
+		log.Printf("API response decoding error: %v", err)
 		return APIDataResponse{IsError: true, Rate: 0, From: from, To: to}
 	}
 
