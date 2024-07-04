@@ -28,18 +28,42 @@ func Connect() {
 	fmt.Println("Connected with Database")
 }
 
-func Insert(currencyPair models.CurrencyPair) {
+func InsertCurrencyPair(currencyPair models.CurrencyPair) {
 	db.Create(&currencyPair)
 }
 
-func Update(currencyPair models.CurrencyPair) {
+func UpdateCurrencyPair(currencyPair models.CurrencyPair) {
 	db.Save(&currencyPair)
 }
 
-func Get() []models.CurrencyPair {
+func GetCurrencyPair(name string) models.CurrencyPair {
+	var currencyPair models.CurrencyPair
+
+	db.First(&currencyPair, "name = ?", name)
+
+	return currencyPair
+}
+
+func GetCurrencyPairs() []models.CurrencyPair {
 	var currencyPairs []models.CurrencyPair
 
 	db.Find(&currencyPairs)
 
 	return currencyPairs
+}
+
+func InsertCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
+	db.Create(&currencyPairMetadata)
+}
+
+func UpdateCurrencyPairMetadata(currencyPairMetadata models.CurrencyPairMetadata) {
+	db.Save(&currencyPairMetadata)
+}
+
+func GetCurrencyPairMetadata(currencyPairID int) models.CurrencyPairMetadata {
+	var currencyPairMetadata models.CurrencyPairMetadata
+
+	db.First(&currencyPairMetadata, "currency_pair_id = ?", currencyPairID)
+
+	return currencyPairMetadata
 }
