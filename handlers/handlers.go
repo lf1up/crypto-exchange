@@ -10,7 +10,7 @@ import (
 )
 
 type CurrencyPair struct {
-	Name        string  `json:"pair_name"`
+	Name        string  `json:"name"`
 	IsAvailable bool    `json:"is_available"`
 	Rate        float64 `json:"rate"`
 }
