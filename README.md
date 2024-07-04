@@ -29,7 +29,8 @@ POSTGRES_HOST=127.0.0.1
 
 ```bash
 make build
-make up-dev
+make up-db # if you still need the DB container
+go run app.go -dev
 ```
 
 ### Use local containers

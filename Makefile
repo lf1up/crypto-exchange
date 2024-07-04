@@ -21,11 +21,9 @@ up: ## Run the project in a local container
 	make up-silent
 	make shell
 
-up-dev:
+up-db: ## Run the database in a local container
 	make delete-container-if-exist
 	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} -v $(project_name)-${db_volume_name}:/var/lib/postgresql/data ${db_image_name}:$(project_name)-v1
-	sleep 3
-	go run app.go -dev
 
 build: ## Generate docker image
 	docker build -f Dockerfile.app -t ${image_name}:$(project_name)-v1 .
