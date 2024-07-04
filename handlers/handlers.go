@@ -10,7 +10,7 @@ import (
 )
 
 type CurrencyPair struct {
-	Pair        string  `json:"pair_name"`
+	Name        string  `json:"pair_name"`
 	IsAvailable bool    `json:"is_available"`
 	Rate        float64 `json:"rate"`
 }
@@ -21,22 +21,23 @@ func CurrencyPairsList(c *fiber.Ctx) error {
 	var pairs []CurrencyPair
 	for _, pair := range rawPairs {
 		pairs = append(pairs, CurrencyPair{
-			Pair:        strings.Replace(pair.Name, "/", "-", -1),
+			Name:        strings.Replace(pair.Name, "/", "-", -1),
 			IsAvailable: true,
 			Rate:        pair.Rate,
 		})
 	}
 
 	return c.JSON(fiber.Map{
-		"success": true,
-		"paris":   pairs,
+		"success":        true,
+		"currency_pairs": pairs,
 	})
 }
 
 func CurrencyPairDetail(c *fiber.Ctx) error {
-	pair := c.Params("pair")
+	pair := c.Params("pairName")
 
-	rawPair := database.GetCurrencyPair(strings.Replace(pair, "-", "/", -1))
+	pairName := strings.Replace(pair, "-", "/", -1)
+	rawPair := database.GetCurrencyPair(pairName)
 
 	if rawPair.ID == 0 {
 		return c.JSON(fiber.Map{
@@ -46,10 +47,12 @@ func CurrencyPairDetail(c *fiber.Ctx) error {
 		})
 	}
 
+	workers.SignalCurrencyUpdater(pairName)
+
 	return c.JSON(fiber.Map{
 		"success":      true,
 		"is_available": true,
-		"pair":         rawPair.Name,
+		"pair_name":    rawPair.Name,
 		"rate":         rawPair.Rate,
 	})
 }
@@ -65,7 +68,9 @@ func CurrencyPairRate(c *fiber.Ctx) error {
 		})
 	}
 
-	rawPair := database.GetCurrencyPair(from + "/" + to)
+	pairName := from + "/" + to
+	rawPair := database.GetCurrencyPair(pairName)
+
 	if rawPair.ID == 0 {
 		return c.JSON(fiber.Map{
 			"success":      false,
@@ -74,7 +79,7 @@ func CurrencyPairRate(c *fiber.Ctx) error {
 		})
 	}
 
-	workers.SignalCurrencyUpdater(from + "/" + to)
+	workers.SignalCurrencyUpdater(pairName)
 
 	return c.JSON(fiber.Map{
 		"success":      true,
