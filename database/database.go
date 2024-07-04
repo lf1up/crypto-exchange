@@ -25,7 +25,7 @@ func Connect() {
 	db.AutoMigrate(&models.CurrencyPair{})
 	db.AutoMigrate(&models.CurrencyPairMetadata{})
 
-	fmt.Println("Connected with Database")
+	fmt.Println("Connected with Database!")
 }
 
 func InsertCurrencyPair(currencyPair models.CurrencyPair) {

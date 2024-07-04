@@ -3,6 +3,7 @@ package main
 import (
 	"crypto-exchange/database"
 	"crypto-exchange/handlers"
+	"crypto-exchange/workers"
 
 	"flag"
 	"log"
@@ -17,13 +18,16 @@ var (
 	prod = flag.Bool("prod", false, "Enable prefork in Production")
 )
 
-// [TODO]: another Docker container is needed to be added with Postgres DB
 func main() {
 	// Parse command-line flags
 	flag.Parse()
 
 	// Connected with database
 	database.Connect()
+
+	// Start the background worker
+	go workers.StartCurrencyUpdater()
+	go workers.ScheduleBackgroundUpdate(1) // 1 minute
 
 	// Create fiber app
 	app := fiber.New(fiber.Config{
