@@ -76,4 +76,11 @@ make purge-db-volume
 make up-silent-prefork
 ```
 
+## A quick intorduction
 Access the API at http://localhost:3000/api/v1/
+
+* http://localhost:3000/api/v1/pairs `[GET]` Fetch list of all avaliabie currency pairs.
+* http://localhost:3000/api/v1/pairs/*<PAIR_NAME>* `[GET]` Fetch details about currency *<PAIR_NAME>*.
+* http://localhost:3000/api/v1/convert `[POST]` Do the value amount conversion between two currency pairs.
+
+See the `app.go` for more info.
