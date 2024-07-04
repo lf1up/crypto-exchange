@@ -76,7 +76,7 @@ make purge-db-volume
 make up-silent-prefork
 ```
 
-## A quick intorduction
+## Brief intorduction
 Access the API at http://localhost:3000/api/v1/
 
 * http://localhost:3000/api/v1/pairs `[GET]` Fetch list of all avaliabie currency pairs.
