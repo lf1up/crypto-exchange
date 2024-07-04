@@ -1,3 +1,5 @@
+include .env
+
 project_name = crypto-api
 image_name = app
 db_image_name = db
@@ -19,17 +21,24 @@ up: ## Run the project in a local container
 	make up-silent
 	make shell
 
+up-dev:
+	make delete-container-if-exist
+	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} -v $(project_name)-${db_volume_name}:/var/lib/postgresql/data ${db_image_name}:$(project_name)-v1
+	sleep 3
+	go run app.go -dev
+
 build: ## Generate docker image
 	docker build -f Dockerfile.app -t ${image_name}:$(project_name)-v1 .
-	docker build -f Dockerfile.db -t ${db_image_name}:$(project_name)-v1 .
+	docker build -f Dockerfile.db --build-arg POSTGRES_USER=${POSTGRES_USER} --build-arg POSTGRES_PASSWORD=${POSTGRES_PASSWORD} --build-arg POSTGRES_DB=${POSTGRES_DB} -t ${db_image_name}:$(project_name)-v1 .
 
 build-no-cache: ## Generate docker image with no cache
 	docker build -f Dockerfile.app --no-cache -t ${image_name}:$(project_name)-v1
-	docker build -f Dockerfile.db --no-cache -t ${db_image_name}:$(project_name)-v1
+	docker build -f Dockerfile.db --build-arg POSTGRES_USER=${POSTGRES_USER} --build-arg POSTGRES_PASSWORD=${POSTGRES_PASSWORD} --build-arg POSTGRES_DB=${POSTGRES_DB} --no-cache -t ${db_image_name}:$(project_name)-v1
 
 up-silent: ## Run local container in background
 	make delete-container-if-exist
 	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} -v $(project_name)-${db_volume_name}:/var/lib/postgresql/data ${db_image_name}:$(project_name)-v1
+	sleep 3
 	docker create -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app
 	make create-network
 	docker start $(project_name)-${image_name}
@@ -37,6 +46,7 @@ up-silent: ## Run local container in background
 up-silent-prefork: ## Run local container in background with prefork
 	make delete-container-if-exist
 	docker run -d -p 5432:5432 --name $(project_name)-${db_image_name} ${db_image_name}:$(project_name)-v1
+	sleep 3
 	docker create -p 3000:3000 --name $(project_name)-${image_name} ${image_name}:$(project_name)-v1 ./app -prod
 	make create-network
 	docker start $(project_name)-${image_name}

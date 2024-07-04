@@ -28,7 +28,7 @@ func CurrencyPairDetail(c *fiber.Ctx) error {
 func CurrencyPairPrice(c *fiber.Ctx) error {
 	from := c.FormValue("from")
 	to := c.FormValue("to")
-	value, err := strconv.ParseFloat(c.FormValue("value"), 64)
+	value, err := strconv.ParseFloat(c.FormValue("amount"), 64)
 	if err != nil {
 		return c.JSON(fiber.Map{
 			"success": false,
@@ -41,7 +41,7 @@ func CurrencyPairPrice(c *fiber.Ctx) error {
 		"is_available": true,
 		"from":         from,
 		"to":           to,
-		"value":        value * 0.3337,
+		"amount":       value * 0.3337,
 	})
 }
 

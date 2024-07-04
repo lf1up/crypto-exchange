@@ -2,8 +2,10 @@ package workers
 
 import (
 	"crypto-exchange/constants"
-	"fmt"
+	"log"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -11,13 +13,18 @@ var (
 )
 
 func StartCurrencyUpdater() {
-	fmt.Println("Currency Updating Worker has Started!")
+	log.Println("Currency Updating Worker has Started!")
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 
 	for {
 		select {
 		case msg, ok := <-messages:
 			if !ok {
-				fmt.Println("Channel closed, exiting.")
+				log.Println("Channel closed, exiting.")
 				return
 			}
 			if msg == "all" {
@@ -38,11 +45,13 @@ func SignalCurrencyUpdater(msg string) {
 }
 
 func UpdateCurrencyPairs(pairs []string) {
-	fmt.Println("Updating currency pairs...")
+	log.Println("Updating currency pairs...")
+
+	// API_KEY := os.Getenv("FASTFOREX_API_KEY")
 
 	for _, pair := range pairs {
-		// [TODO]: update the currency pair in the database from https://www.fastforex.io/ API
-		fmt.Println("Updating pair: ", pair)
+		log.Println("Updating pair: ", pair)
+
 	}
 }
 

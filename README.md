@@ -14,14 +14,25 @@ Use the following plugins, in this boilerplate project:
 
 ## Development
 
-### Start the application 
+### Fill the *.env* file
+
+```
+FASTFOREX_API_KEY=*PUT_YOUR_KEY_HERE*
+POSTGRES_USER=*PUT_YOUR_PG_USERNAME_HERE*
+POSTGRES_PASSWORD=*PUT_YOUR_PG_PASSWORD_HERE*
+POSTGRES_DB=*PUT_YOUR_PG_DB_NAME_HERE*
+POSTGRES_HOST=127.0.0.1
+```
+
+### Start the application in dev mode (hot code reloading)
 
 
 ```bash
-go run app.go
+make build
+make up-dev
 ```
 
-### Use local container
+### Use local containers
 
 ```
 # Shows all commands
@@ -65,4 +76,4 @@ make purge-db-volume
 make up-silent-prefork
 ```
 
-Use API at http://localhost:3000/api/v1/
+Access the API at http://localhost:3000/api/v1/

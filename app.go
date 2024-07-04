@@ -16,6 +16,7 @@ import (
 var (
 	port = flag.String("port", ":3000", "Port to listen on")
 	prod = flag.Bool("prod", false, "Enable prefork in Production")
+	dev  = flag.Bool("dev", false, "Enable development mode")
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	// Connected with database
-	database.Connect()
+	database.Connect(*dev)
 
 	// Start the background worker
 	go workers.StartCurrencyUpdater()
@@ -44,7 +45,7 @@ func main() {
 	// Bind handlers
 	v1.Get("/pairs", handlers.CurrencyPairList)
 	v1.Get("/pairs/:pair", handlers.CurrencyPairDetail)
-	v1.Post("/price", handlers.CurrencyPairPrice)
+	v1.Post("/convert", handlers.CurrencyPairPrice)
 
 	// Setup static files [disabled because of no need for static frontend files in this app]
 	// app.Static("/", "./static/public")

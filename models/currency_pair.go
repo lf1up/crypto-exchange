@@ -16,9 +16,8 @@ type CurrencyPairMetadata struct {
 
 type CurrencyPair struct {
 	gorm.Model
-	Name   string
-	From   string
-	To     string
-	Price  float64
-	Market string
+	Name string
+	From string
+	To   string
+	Rate float64
 }

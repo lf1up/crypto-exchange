@@ -23,6 +23,10 @@ WORKDIR /app
 RUN mkdir ./static
 COPY ./static ./static
 
+# Copy the .env file
+# This is a security risk, as the .env file contains sensitive information (replace it with ENV variables)
+COPY .env .
+
 # `crypto-exchange` should be replaced here as well
 COPY --from=build /go/src/crypto-exchange/app .
 

@@ -2,8 +2,10 @@ package database
 
 import (
 	"crypto-exchange/models"
-	"fmt"
+	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -13,19 +15,30 @@ var (
 )
 
 // Connect with database
-func Connect() {
-	// [TODO]: put credential into an .env file
-	dsn := "host=crypto-api-db user=postgres password=lolwut123 dbname=exchange port=5432"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	// [TODO]: handle error
+func Connect(isDev bool) {
+	err := godotenv.Load()
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	var host string
+	if isDev {
+		host = os.Getenv("POSTGRES_HOST")
+	} else {
+		host = "crypto-api-db"
+	}
+
+	dsn := "host=" + host + " user=" + os.Getenv("POSTGRES_USER") + " password=" + os.Getenv("POSTGRES_PASSWORD") + " dbname=" + os.Getenv("POSTGRES_DB") + " port=5432"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Failed to connect with Database: %v", err)
+		return
 	}
 
 	db.AutoMigrate(&models.CurrencyPair{})
 	db.AutoMigrate(&models.CurrencyPairMetadata{})
 
-	fmt.Println("Connected with Database!")
+	log.Println("Connected with Database!")
 }
 
 func InsertCurrencyPair(currencyPair models.CurrencyPair) {
