@@ -1,0 +1,109 @@
+basePath: /api/v1/
+host: localhost:3000
+info:
+  contact: {}
+  description: This is a simple crypto exchange API example.
+  title: Crypto Exchange API Example
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Checks the current status of the API.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response indicating API is OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: API status
+      tags:
+      - status
+  /currencies:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all available currency pairs.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with list of currency pairs
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+      summary: List of currency pairs
+      tags:
+      - currency
+  /currencies/{pair}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves detailed information of a specific currency pair.
+      parameters:
+      - description: Currency pair code
+        in: path
+        name: pair
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with currency pair details
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Error response when currency pair is not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Currency pair details
+      tags:
+      - currency
+  /currencies/convert:
+    post:
+      consumes:
+      - application/json
+      description: Converts currency from one type to another using the specified
+        amount.
+      parameters:
+      - description: Currency code to convert from
+        in: query
+        name: from
+        required: true
+        type: string
+      - description: Currency code to convert to
+        in: query
+        name: to
+        required: true
+        type: string
+      - description: Amount to convert
+        in: query
+        name: amount
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with conversion result
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Error response when currency pair is not found or amount is
+            invalid
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Convert currency
+      tags:
+      - currency
+swagger: "2.0"

@@ -77,11 +77,13 @@ make purge-db-volume
 make up-silent-prefork
 ```
 
-## Brief intorduction
+## Brief Intorduction
 Access the API at http://localhost:3000/api/v1/
 
-* http://localhost:3000/api/v1/pairs `[GET]` Fetch list of all avaliabie currency pairs.
-* http://localhost:3000/api/v1/pairs/*<PAIR_NAME>* `[GET]` Fetch details about currency *<PAIR_NAME>*.
-* http://localhost:3000/api/v1/convert `[POST]` Do the value amount conversion between two currency pairs.
+* http://localhost:3000/api/v1/currencies `[GET]` Fetch list of all avaliabie currency pairs.
+* http://localhost:3000/api/v1/currencies/*<PAIR_NAME>* `[GET]` Fetch details about currency *<PAIR_NAME>*.
+* http://localhost:3000/api/v1/currencies/convert `[POST]` Do the value amount conversion between two currency pairs.
+
+Full **Swagger** documentation (with the API playground) can be found at http://localhost:3000/swagger/
 
 See the `app.go` for more info.
