@@ -1,16 +1,6 @@
 # Crypto Exchange API Example
 
-## IDE Development
-
-### Visual Studio Code
-
-Use the following plugins, in this boilerplate project:
-- Name: Go
-  - ID: golang.go
-  - Description: Rich Go language support for Visual Studio Code
-  - Version: 0.29.0
-  - Editor: Go Team at Google
-  - Link to Marketplace to VS: https://marketplace.visualstudio.com/items?itemName=golang.Go
+![Crypto Exchange API Example](./api-preview.png)
 
 ## Development
 
